@@ -3,7 +3,6 @@ const UserModel = require("../models/user");
 const getAllUser = async (req, res) => {
   try {
     const [data] = await UserModel.getAllUser();
-
     res.json({
       message: "GET all user success",
       data: data,
@@ -11,7 +10,7 @@ const getAllUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
-      serverMessage: error,
+      serverMessage: error.message,
     });
   }
 };
@@ -20,43 +19,57 @@ const createNewUser = async (req, res) => {
   const { body } = req;
   try {
     await UserModel.createNewUser(body);
-    res.json({
+    res.status(201).json({
       message: "CREATE new user success",
       data: req.body,
     });
   } catch (error) {
-    res.status(500).json({
-      message: "Server Error",
-      serverMessage: error,
-    });
+    if (error.message === "Email already exists") {
+      res.status(400).json({
+        message: "Email already exists",
+      });
+    } else {
+      res.status(500).json({
+        message: "Server Error",
+        serverMessage: error.message,
+      });
+    }
   }
 };
 
-const updateUser = (req, res) => {
-  const { idUser } = req.params;
-  console.log("idUser: ", idUser);
-  res.json({
-    message: "Update user success",
-    data: req.body,
-  });
-};
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
 
-const deleteUser = (req, res) => {
-  const { idUser } = req.params;
-  res.json({
-    message: "DELETE user success",
-    data: {
-      id: idUser,
-      nama: "Febriadi Lesmana",
-      email: "pebzkruger@gmail.com",
-      address: "Batam, Kepulauan Riau",
-    },
-  });
+  if (!email || !password) {
+    return res.status(400).json({
+      message: "Email and password are required",
+    });
+  }
+
+  try {
+    const user = await UserModel.loginUser(email, password);
+
+    res.status(200).json({
+      message: "Login success",
+      data: user,
+    });
+  } catch (error) {
+    let errorMessage = "Invalid email or password";
+
+    if (error.message === "User with this email does not exist") {
+      errorMessage = "User with this email does not exist";
+    } else if (error.message === "Incorrect password") {
+      errorMessage = "Incorrect password";
+    }
+
+    res.status(400).json({
+      message: errorMessage,
+    });
+  }
 };
 
 module.exports = {
   getAllUser,
   createNewUser,
-  updateUser,
-  deleteUser,
+  loginUser,
 };
