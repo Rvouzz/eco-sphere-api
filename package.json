@@ -1,0 +1,15 @@
+{
+  "name": "eco-sphere-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "eco-sphere",
+  "license": "ISC",
+  "scripts": {
+    "start": "nodemon ./src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
