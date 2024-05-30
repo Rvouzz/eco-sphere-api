@@ -4,7 +4,7 @@ const getAllRecycling = async (req,res) => {
     try {
         const [data] = await recyclingModel.getAllRecycling();
         res.json({
-          message: "GET all contnts success",
+          message: "GET all contents success",
           data: data,
         });
       } catch (error) {

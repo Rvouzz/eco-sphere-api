@@ -13,7 +13,7 @@ const upload = require("./middleware/multer");
 app.use(express.json());
 app.use(cors());
 app.use(middlewareLogReq);
-app.use("/user", userRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/contents", upload.single('image'), contentsRoutes);
 app.use("/api/waste", upload.single('image'), wasteRoutes);
 app.use("/api/recycling", upload.single('image'), recyclingRoutes);
