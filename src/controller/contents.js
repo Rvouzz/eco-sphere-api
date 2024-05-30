@@ -33,8 +33,9 @@ const getContentById = async (req, res) => {
 
 const createNewContent = async (req, res) => {
     const { body } = req;
+    const image = req.file;
     try {
-      await contentsModel.createNewContent(body);
+      await contentsModel.createNewContent(body,image);
       res.status(201).json({
         message: "CREATE new content success",
         data: req.body,
@@ -50,8 +51,9 @@ const createNewContent = async (req, res) => {
 const updateContent = async (req, res) => {
     const { body } = req;
     const {contentId} = req.params;
+    const image = req.file;
     try {
-      await contentsModel.updateContent(body,contentId);
+      await contentsModel.updateContent(body,contentId,image);
       res.status(200).json({
         message: "UPDATE content success",
         data: req.body,
