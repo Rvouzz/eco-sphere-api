@@ -33,8 +33,9 @@ const getRecyclingById = async (req, res) => {
 
 const createNewRecycling = async (req, res) => {
     const { body } = req;
+    const image = req.file;
     try {
-      await recyclingModel.createNewRecycling(body);
+      await recyclingModel.createNewRecycling(body, image);
       res.status(201).json({
         message: "CREATE new recycling success",
         data: req.body,
@@ -50,8 +51,9 @@ const createNewRecycling = async (req, res) => {
 const updateRecycling = async (req, res) => {
     const { body } = req;
     const { recyclingId } = req.params;
+    const image = req.file;
     try {
-      await recyclingModel.updateRecycling(body, recyclingId);
+      await recyclingModel.updateRecycling(body, recyclingId, image);
       res.status(200).json({
         message: "UPDATE recycling success",
         data: req.body,

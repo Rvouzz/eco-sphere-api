@@ -33,8 +33,9 @@ const getWasteById = async (req, res) => {
 
 const createNewWaste = async (req, res) => {
     const { body } = req;
+    const image = req.file;
     try {
-     const [data] = await wasteModel.createNewWaste(body);
+     const [data] = await wasteModel.createNewWaste(body, image);
       res.status(201).json({
         message: "CREATE new waste success",
         data: data,
@@ -50,8 +51,9 @@ const createNewWaste = async (req, res) => {
 const updateWaste = async (req, res) => {
     const { body } = req;
     const { wasteId } = req.params;
+    const image = req.file;
     try {
-        const [data] = await wasteModel.updateWaste(body, wasteId);
+        const [data] = await wasteModel.updateWaste(body, wasteId, image);
       res.status(200).json({
         message: "UPDATE waste success",
         data: data,
