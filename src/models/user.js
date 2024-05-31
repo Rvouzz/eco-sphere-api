@@ -77,9 +77,49 @@ const loginUser = async (req, email, password) => {
   }
 };
 
+const updateUserById = async (body, id_user) => {
+  const { nama_depan, nama_belakang, password } = body;
+
+  let SQLQuery;
+  let userValues;
+
+  if (password) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ?, password = ? WHERE id_user = ?";
+    userValues = [nama_depan, nama_belakang, hashedPassword, id_user];
+  } else {
+    SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ? WHERE id_user = ?";
+    userValues = [nama_depan, nama_belakang, id_user];
+  }
+
+  return dbPool.execute(SQLQuery, userValues);
+};
+
+const updateRoleById = async (id_user, newRole) => {
+  const checkAdminQuery = "SELECT * FROM user WHERE id_user = ? AND role = 'Admin'";
+  const [Admin] = await dbPool.execute(checkAdminQuery, [id_user]);
+
+  if (Admin.length === 0) {
+    throw new Error("Only admins can update user roles");
+  }
+
+  const updateQuery = "UPDATE user SET role = ? WHERE id_user = ?";
+  const updateValues = [newRole, id_user];
+
+  return dbPool.execute(updateQuery, updateValues);
+};
+
+const deleteUserById = async (id_user) => {
+  const deleteQuery = "DELETE FROM user WHERE id_user = ?";
+  return dbPool.execute(deleteQuery, [id_user]);
+};
+
 module.exports = {
   getAllUser,
   getUserById,
   createNewUser,
   loginUser,
+  updateUserById,
+  updateRoleById,
+  deleteUserById
 };

@@ -91,9 +91,79 @@ const loginUser = async (req, res) => {
   }
 };
 
+const updateUserById = async (req, res) => {
+  const { id_user } = req.params;
+  const { body } = req;
+
+  try {
+    await UserModel.updateUserById(body, id_user);
+    res.json({
+      message: "UPDATE user success",
+      data: {
+        id_user,
+        ...body,
+        password: undefined,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      serverMessage: error.message,
+    });
+  }
+};
+
+const updateRoleById = async (req, res) => {
+  const { id_user } = req.params;
+  const { newRole } = req.body;
+
+  try {
+    const currentUser = req.user;
+
+    if (currentUser.role !== "Admin") {
+      return res.status(403).json({
+        message: "Only admins can update user roles",
+      });
+    }
+
+    await UserModel.updateRoleById(id_user, newRole);
+    res.json({
+      message: "UPDATE user role success",
+      data: {
+        id_user,
+        newRole,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      serverMessage: error.message,
+    });
+  }
+};
+
+const deleteUserById = async (req, res) => {
+  const { id_user } = req.params;
+  try {
+      await UserModel.deleteUserById(id_user);
+      res.status(200).json({
+          message: "DELETE user success",
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: "Server Error",
+          serverMessage: error.message,
+      });
+  }
+};
+
+
 module.exports = {
   getAllUser,
   getUserById,
   createNewUser,
   loginUser,
+  updateUserById,
+  updateRoleById,
+  deleteUserById,
 };
