@@ -15,6 +15,29 @@ const getAllUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const { id_user } = req.params;
+    const [data] = await UserModel.getUserById(id_user);
+
+    if (data.length === 0) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.json({
+      message: "GET user by ID success",
+      data: data[0],
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      serverMessage: error.message,
+    });
+  }
+};
+
 const createNewUser = async (req, res) => {
   const { body } = req;
   try {
@@ -47,7 +70,7 @@ const loginUser = async (req, res) => {
   }
 
   try {
-    const user = await UserModel.loginUser(email, password);
+    const user = await UserModel.loginUser(req, email, password);
 
     res.status(200).json({
       message: "Login success",
@@ -70,6 +93,7 @@ const loginUser = async (req, res) => {
 
 module.exports = {
   getAllUser,
+  getUserById,
   createNewUser,
   loginUser,
 };

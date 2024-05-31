@@ -8,5 +8,6 @@ router.post("/login", UserController.loginUser);
 
 // READ - GET
 router.get("/", UserController.getAllUser);
+router.get("/:id_user", UserController.getUserById)
 
 module.exports = router;

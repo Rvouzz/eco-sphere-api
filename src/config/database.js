@@ -7,4 +7,9 @@ const dbPool = mysql.createPool({
   database: process.env.DB_NAME,
 });
 
-module.exports = dbPool.promise();
+const secretKey = process.env.JWT_SECRET;
+
+module.exports = {
+  dbPool: dbPool.promise(),
+  secretKey: secretKey
+};

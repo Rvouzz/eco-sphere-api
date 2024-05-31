@@ -1,9 +1,15 @@
-const dbPool = require("../config/database");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { dbPool, secretKey } = require("../config/database");
 
 const getAllUser = () => {
   const SQLQuery = "SELECT * FROM user";
   return dbPool.execute(SQLQuery);
+};
+
+const getUserById = (id_user) => {
+  const SQLQuery = "SELECT * FROM user WHERE id_user = ?";
+  return dbPool.execute(SQLQuery, [id_user]);
 };
 
 const createNewUser = async (body) => {
@@ -23,7 +29,7 @@ const createNewUser = async (body) => {
   return dbPool.execute(SQLQuery, userValues);
 };
 
-const loginUser = async (email, password) => {
+const loginUser = async (req, email, password) => {
   try {
     console.log("Starting login process");
 
@@ -34,7 +40,7 @@ const loginUser = async (email, password) => {
 
     if (users.length === 0) {
       console.error("User with this email does not exist");
-      throw new Error();
+      throw new Error("Invalid email or password");
     }
 
     const user = users[0];
@@ -44,16 +50,25 @@ const loginUser = async (email, password) => {
 
     if (!isPasswordValid) {
       console.error("Incorrect password");
-      throw new Error();
+      throw new Error("Invalid email or password");
     }
 
     const { password: _, ...userWithoutPassword } = user;
+
+    const token = jwt.sign(
+      { id_user: user.id_user, email: user.email },
+      secretKey,
+      { expiresIn: "1h" }
+    );
+
+    req.session.user = userWithoutPassword;
 
     console.log("Login successful");
 
     return {
       success: true,
       user: userWithoutPassword,
+      token,
       message: "Login successful",
     };
   } catch (error) {
@@ -64,6 +79,7 @@ const loginUser = async (email, password) => {
 
 module.exports = {
   getAllUser,
+  getUserById,
   createNewUser,
   loginUser,
 };
