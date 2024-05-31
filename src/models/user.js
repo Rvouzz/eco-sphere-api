@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { dbPool, secretKey } = require("../config/database");
 const crypto = require('crypto');
+const moment = require('moment');
 
 const getAllUser = () => {
   const SQLQuery = "SELECT * FROM user";
@@ -117,10 +118,12 @@ const deleteUserById = async (id_user) => {
 
 const generatePasswordRecoveryToken = async (userEmail) => {
   const token = crypto.randomBytes(20).toString('hex');
-  const expiration = Date.now() + 3600000;
+  const expiration = Date.now() + 15 * 60 * 1000;
+
+  const formattedExpiration = moment(expiration).format('YYYY-MM-DD HH:mm:ss');
 
   const SQLQuery = `UPDATE user SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?`;
-  await dbPool.execute(SQLQuery, [token, expiration, userEmail]);
+  await dbPool.execute(SQLQuery, [token, formattedExpiration, userEmail]);
 
   return token;
 };
