@@ -1,8 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { dbPool, secretKey } = require("../config/database");
-const crypto = require('crypto');
-const moment = require('moment');
 
 const getAllUser = () => {
   const SQLQuery = "SELECT * FROM user";
@@ -97,6 +95,11 @@ const updateUserById = async (body, id_user) => {
   return dbPool.execute(SQLQuery, userValues);
 };
 
+const deleteUserById = async (id_user) => {
+  const deleteQuery = "DELETE FROM user WHERE id_user = ?";
+  return dbPool.execute(deleteQuery, [id_user]);
+};
+
 const updateRoleById = async (id_user, newRole) => {
   const checkAdminQuery = "SELECT * FROM user WHERE id_user = ? AND role = 'Admin'";
   const [Admin] = await dbPool.execute(checkAdminQuery, [id_user]);
@@ -111,47 +114,12 @@ const updateRoleById = async (id_user, newRole) => {
   return dbPool.execute(updateQuery, updateValues);
 };
 
-const deleteUserById = async (id_user) => {
-  const deleteQuery = "DELETE FROM user WHERE id_user = ?";
-  return dbPool.execute(deleteQuery, [id_user]);
-};
-
-const generatePasswordRecoveryToken = async (userEmail) => {
-  const token = crypto.randomBytes(20).toString('hex');
-  const expiration = Date.now() + 15 * 60 * 1000;
-
-  const formattedExpiration = moment(expiration).format('YYYY-MM-DD HH:mm:ss');
-
-  const SQLQuery = `UPDATE user SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?`;
-  await dbPool.execute(SQLQuery, [token, formattedExpiration, userEmail]);
-
-  return token;
-};
-
-const resetPassword = async (userEmail, newPassword) => {
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-  const SQLQuery = `
-    UPDATE user
-    SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL
-    WHERE email = ? AND resetPasswordExpires > ?
-  `;
-
-  const [result] = await dbPool.execute(SQLQuery, [hashedPassword, userEmail, Date.now()]);
-
-  if (result.affectedRows === 0) {
-    throw new Error('Password reset token is invalid or has expired');
-  }
-};
-
 module.exports = {
   getAllUser,
   getUserById,
   createNewUser,
   loginUser,
   updateUserById,
-  updateRoleById,
   deleteUserById,
-  generatePasswordRecoveryToken,
-  resetPassword
+  updateRoleById,
 };
