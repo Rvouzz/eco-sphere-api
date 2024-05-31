@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { dbPool, secretKey } = require("../config/database");
+const crypto = require('crypto');
 
 const getAllUser = () => {
   const SQLQuery = "SELECT * FROM user";
@@ -114,6 +115,32 @@ const deleteUserById = async (id_user) => {
   return dbPool.execute(deleteQuery, [id_user]);
 };
 
+const generatePasswordRecoveryToken = async (userEmail) => {
+  const token = crypto.randomBytes(20).toString('hex');
+  const expiration = Date.now() + 3600000;
+
+  const SQLQuery = `UPDATE user SET resetPasswordToken = ?, resetPasswordExpires = ? WHERE email = ?`;
+  await dbPool.execute(SQLQuery, [token, expiration, userEmail]);
+
+  return token;
+};
+
+const resetPassword = async (userEmail, newPassword) => {
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  const SQLQuery = `
+    UPDATE user
+    SET password = ?, resetPasswordToken = NULL, resetPasswordExpires = NULL
+    WHERE email = ? AND resetPasswordExpires > ?
+  `;
+
+  const [result] = await dbPool.execute(SQLQuery, [hashedPassword, userEmail, Date.now()]);
+
+  if (result.affectedRows === 0) {
+    throw new Error('Password reset token is invalid or has expired');
+  }
+};
+
 module.exports = {
   getAllUser,
   getUserById,
@@ -121,5 +148,7 @@ module.exports = {
   loginUser,
   updateUserById,
   updateRoleById,
-  deleteUserById
+  deleteUserById,
+  generatePasswordRecoveryToken,
+  resetPassword
 };

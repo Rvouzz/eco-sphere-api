@@ -17,4 +17,8 @@ router.patch("/:id_user", UserController.updateRoleById)
 // DELETE - DELETE
 router.delete("/:id_user", UserController.deleteUserById)
 
+// PASSWORD RECOVERY
+router.post("/password-recovery", UserController.requestPasswordRecovery);
+router.post("/reset-password", UserController.resetPassword);
+
 module.exports = router;
