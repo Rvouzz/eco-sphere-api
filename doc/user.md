@@ -45,9 +45,21 @@ Response Body Success :
     "message": "GET all user success",
     "data": [
         {
-            "id_user": 2,
+            "id_user": 3,
             "email": "pebzkruger@gmail.com",
-            "password": "$2b$10$Al5Hyu9OHZFiMHXRJrZ4jOaeLJchrcssmHw6RvIKk/E3n3uMNyaHK",
+            "password": "$2b$10$i7DqSNAbSsnE.JAoHoUFhOxzZxM8dMgYgZebGItTj0lf9KYFnU1ki",
+            "nama_depan": "",
+            "nama_belakang": "",
+            "img_profile": {
+                "type": "Buffer",
+                "data": []
+            },
+            "role": "User"
+        },
+        {
+            "id_user": 4,
+            "email": "pebz@gmail.com",
+            "password": "$2b$10$ye6GyDeNP2uhVwhHK9QsHe01hnWeMyX4Wa1uvV4Sk9dEwt/b5bLlq",
             "nama_depan": "",
             "nama_belakang": "",
             "img_profile": {
