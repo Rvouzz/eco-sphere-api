@@ -1,4 +1,4 @@
-const dbPool = require("../config/database");
+const {dbPool} = require("../config/database");
 
 const getAllContents = () => {
     const SQLQuery = "SELECT contents.contentId, contents.name, contents.description, contents.image, waste.name as waste_name FROM contents left join waste on contents.wasteId = waste.wasteId ORDER BY contents.contentId"; 
