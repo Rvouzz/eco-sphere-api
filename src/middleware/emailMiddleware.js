@@ -1,7 +1,7 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 
-const sendRecoveryEmail = async (email, token) => {
+const sendRecoveryEmail = async (email, otp) => {
   try {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -18,31 +18,20 @@ const sendRecoveryEmail = async (email, token) => {
       from: '"Eco-Sphere Support" <passwordreset@eco-sphere.com>',
       to: email,
       subject: 'Eco-Sphere Password Reset Request',
-      text: `Hello,
-
-You are receiving this email because a password reset request for your account was received.
-
-Please click the link below or copy and paste it into your browser to reset your password:
-
-http://eco-sphere.com/reset/${token}
-
-If you did not request a password reset, please ignore this email. Your password will remain unchanged.
-
-Thank you,
-Eco-Sphere Support Team`,
+      text: `Hello,\n\nYou are receiving this email because a password reset request for your account was received.\n\nPlease use the following One-Time Password (OTP) to reset your password:\n\n${otp}\n\nIf you did not request a password reset, please ignore this email. Your password will remain unchanged.\n\nThank you,\nEco-Sphere Support Team`,
       html: `
-      <div style="font-family: Arial, sans-serif; color: #333;">
-        <h2>Hello,</h2>
-        <p>You are receiving this email because a password reset request for your account was received.</p>
-        <p>Please click the link below or copy and paste it into your browser to reset your password:</p>
-        <p style="text-align: center; margin: 20px 0;">
-          <a href="http://eco-sphere.com/reset/${token}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
+      <div style="font-family: Arial, sans-serif; color: #fff; background-color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <h2 style="color: #68D2E8;">Hello,</h2>
+        <p style="font-size: 16px; color: #fff;">You are receiving this email because a password reset request for your account was received.</p>
+        <p style="font-size: 16px; color: #fff;">Please use the following One-Time Password (OTP) to reset your password:</p>
+        <p style="text-align: center; margin: 20px 0; font-size: 24px; font-weight: bold; color: #fff;">
+          ${otp}
         </p>
-        <p>If you did not request a password reset, please ignore this email. Your password will remain unchanged.</p>
-        <p>Thank you,</p>
-        <p>Eco-Sphere Support Team</p>
+        <p style="font-size: 16px; color: #fff;">If you did not request a password reset, please ignore this email. Your password will remain unchanged.</p>
+        <p style="font-size: 16px; color: #fff;">Thank you,</p>
+        <p style="font-size: 16px; color: #4CAF50; font-weight: bold;">Eco-Sphere Support Team</p>
         <hr style="border: 0; border-top: 1px solid #ccc;" />
-        <p style="font-size: 12px; color: #777;">If you have any questions, please contact our support team at support@eco-sphere.com.</p>
+        <p style="font-size: 12px; color: #777;">If you have any questions, please contact our support team at <a href="mailto:support@eco-sphere.com" style="color: #4CAF50; text-decoration: none;">eco.sphere2k24@gmail.com</a>.</p>
       </div>`,
     };
 

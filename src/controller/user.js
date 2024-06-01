@@ -1,6 +1,4 @@
 const UserModel = require("../models/user");
-const sendRecoveryEmail = require('../middleware/emailMiddleware');
-const validator = require('validator');
 
 const getAllUser = async (req, res) => {
   try {
@@ -147,69 +145,13 @@ const updateRoleById = async (req, res) => {
 const deleteUserById = async (req, res) => {
   const { id_user } = req.params;
   try {
-      await UserModel.deleteUserById(id_user);
-      res.status(200).json({
-          message: "DELETE user success",
-      });
-  } catch (error) {
-      res.status(500).json({
-          message: "Server Error",
-          serverMessage: error.message,
-      });
-  }
-};
-
-const requestPasswordRecovery = async (req, res) => {
-  const { email } = req.body;
-
-  if (!email || !validator.isEmail(email)) {
-    return res.status(400).json({
-      message: "Valid email is required",
-    });
-  }
-
-  try {
-    const token = await UserModel.generatePasswordRecoveryToken(email);
-    await sendRecoveryEmail(email, token);
-
+    await UserModel.deleteUserById(id_user);
     res.status(200).json({
-      message: "Password recovery email sent",
+      message: "DELETE user success",
     });
   } catch (error) {
-    console.error("Error requesting password recovery:", error);
-    
     res.status(500).json({
-      message: "Failed to send password recovery email",
-      serverMessage: error.message,
-    });
-  }
-};
-
-const resetPassword = async (req, res) => {
-  const { token, newPassword } = req.body;
-
-  if (!token || !newPassword) {
-    return res.status(400).json({
-      message: "Token and new password are required",
-    });
-  }
-
-  try {
-    await UserModel.resetPassword(token, newPassword);
-
-    res.status(200).json({
-      message: "Password has been reset",
-    });
-  } catch (error) {
-    console.error("Error resetting password:", error);
-    
-    let errorMessage = "Internal server error";
-    if (error.message === 'Password reset token is invalid or has expired') {
-      errorMessage = "Invalid or expired reset token";
-    }
-
-    res.status(400).json({
-      message: errorMessage,
+      message: "Server Error",
       serverMessage: error.message,
     });
   }
@@ -223,6 +165,4 @@ module.exports = {
   updateUserById,
   updateRoleById,
   deleteUserById,
-  requestPasswordRecovery,
-  resetPassword
 };

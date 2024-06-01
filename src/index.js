@@ -12,6 +12,7 @@ const upload = require("./middleware/multer");
 
 // Routes
 const userRoutes = require("./routes/user");
+const recoveryRoutes = require("./routes/password-recovery");
 const contentsRoutes = require("./routes/contents");
 const wasteRoutes = require("./routes/waste");
 const recyclingRoutes = require("./routes/recycling");
@@ -34,6 +35,7 @@ app.use(session({
 
 // Routes
 app.use("/api/user", userRoutes);
+app.use("/api/password-recovery", recoveryRoutes);
 app.use("/api/contents", upload.single('image'), contentsRoutes);
 app.use("/api/waste", upload.single('image'), wasteRoutes);
 app.use("/api/recycling", upload.single('image'), recyclingRoutes);
