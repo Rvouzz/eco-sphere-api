@@ -16,6 +16,7 @@ const recoveryRoutes = require("./routes/password-recovery");
 const contentsRoutes = require("./routes/contents");
 const wasteRoutes = require("./routes/waste");
 const recyclingRoutes = require("./routes/recycling");
+const communityRoutes = require("./routes/community")
 
 // Config
 const { secretKey } = require('./config/database');
@@ -39,6 +40,7 @@ app.use("/api/password-recovery", recoveryRoutes);
 app.use("/api/contents", upload.single('image'), contentsRoutes);
 app.use("/api/waste", upload.single('image'), wasteRoutes);
 app.use("/api/recycling", upload.single('image'), recyclingRoutes);
+app.use("/api/community", communityRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
