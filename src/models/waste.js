@@ -2,7 +2,7 @@ const {dbPool} = require("../config/database");
 
 const getAllWaste =()=>{
 
-    const SQLQuery = "SELECT waste.name, waste.description, waste.characteristics, waste.impacts, waste.image, contents.name as content_name FROM waste left join contents on waste.contentId = contents.contentId order by waste.name";
+    const SQLQuery = "SELECT waste.wasteId, waste.name, waste.description, waste.characteristics, waste.impacts, waste.image, contents.name as content_name, recycling.steps as recycling_steps FROM waste join contents on waste.contentId = contents.contentId left join recycling on waste.recyclingId = recycling.recyclingId order by waste.wasteId";
     return dbPool.execute(SQLQuery);
 }
 
