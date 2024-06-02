@@ -96,6 +96,69 @@ const commentOnPost = (id_user, communityId, comment, comment_img) => {
   return dbPool.execute(SQLQuery, [id_user, communityId, comment, comment_img.buffer || null]);
 };
 
+const getAllLikes = () => {
+  const SQLQuery = `
+    SELECT 
+      likes.likeId, 
+      likes.communityId, 
+      likes.id_user, 
+      user.email
+    FROM 
+      likes
+    LEFT JOIN 
+      user 
+    ON 
+      likes.id_user = user.id_user
+    ORDER BY 
+      likes.likeId
+  `;
+  return dbPool.execute(SQLQuery);
+};
+
+const getAllComments = () => {
+  const SQLQuery = `
+    SELECT 
+      comments.commentId, 
+      comments.communityId, 
+      comments.id_user, 
+      comments.comment, 
+      comments.comment_img, 
+      comments.created_at, 
+      user.email
+    FROM 
+      comments
+    LEFT JOIN 
+      user 
+    ON 
+      comments.id_user = user.id_user
+    ORDER BY 
+      comments.commentId
+  `;
+  return dbPool.execute(SQLQuery);
+};
+
+const getCommentById = (commentId) => {
+  const SQLQuery = `
+    SELECT 
+      comments.commentId, 
+      comments.communityId, 
+      comments.id_user, 
+      comments.comment, 
+      comments.comment_img, 
+      comments.created_at, 
+      user.email
+    FROM 
+      comments
+    LEFT JOIN 
+      user 
+    ON 
+      comments.id_user = user.id_user
+    WHERE 
+      comments.commentId = ?
+  `;
+  return dbPool.execute(SQLQuery, [commentId]);
+};
+
 const deleteComment = (commentId) => {
   const SQLQuery = "DELETE FROM comments WHERE commentId = ?";
   return dbPool.execute(SQLQuery, [commentId]);
@@ -109,5 +172,8 @@ module.exports = {
   likePost,
   unlikePost,
   commentOnPost,
+  getAllComments,
+  getAllLikes,
+  getCommentById,
   deleteComment
 };
