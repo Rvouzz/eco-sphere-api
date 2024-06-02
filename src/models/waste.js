@@ -1,4 +1,4 @@
-const dbPool = require("../config/database");
+const {dbPool} = require("../config/database");
 
 const getAllWaste =()=>{
 
