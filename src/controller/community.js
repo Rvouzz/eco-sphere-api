@@ -136,6 +136,57 @@ const deleteComment = async (req, res) => {
   }
 };
 
+const getAllLikes = async (req, res) => {
+  try {
+    const [data] = await communityModel.getAllLikes();
+    res.json({
+      message: 'GET all likes success',
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server Error',
+      serverMessage: error.message,
+    });
+  }
+};
+
+const getAllComments = async (req, res) => {
+  try {
+    const [data] = await communityModel.getAllComments();
+    res.json({
+      message: 'GET all comments success',
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server Error',
+      serverMessage: error.message,
+    });
+  }
+};
+
+const getCommentById = async (req, res) => {
+  const { commentId } = req.params;
+  try {
+    const [data] = await communityModel.getCommentById(commentId);
+    if (data.length === 0) {
+      return res.status(404).json({
+        message: 'Comment not found',
+      });
+    }
+    res.json({
+      message: 'GET comment success',
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server Error',
+      serverMessage: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllCommunity,
   getCommunityById,
@@ -144,5 +195,8 @@ module.exports = {
   likePost,
   unlikePost,
   commentOnPost,
-  deleteComment
+  deleteComment,
+  getAllLikes,
+  getAllComments,
+  getCommentById
 };

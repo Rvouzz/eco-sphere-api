@@ -6,15 +6,18 @@ const authenticateToken = require('../middleware/auth');
 // READ - GET //
 router.get('/', communityController.getAllCommunity);
 router.get('/:communityId', communityController.getCommunityById);
+router.get('/likes/all', communityController.getAllLikes);
+router.get('/comments/all', communityController.getAllComments);
+router.get('/comments/:commentId', communityController.getCommentById);
 
 // CREATE - POST //
 router.post('/', authenticateToken, communityController.createPostByUser);
 router.post('/:communityId/like', authenticateToken, communityController.likePost);
-router.post('/:communityId/comment', authenticateToken, communityController.commentOnPost);
+router.post('/:communityId/comments', authenticateToken, communityController.commentOnPost);
 
 // DELETE - DELETE //
 router.delete("/:communityId", communityController.deleteCommunity);
-router.delete('/:communityId/unlike',authenticateToken, communityController.unlikePost);
-router.delete("/:commentId", authenticateToken, communityController.deleteComment);
+router.delete('/:communityId/unlike', authenticateToken, communityController.unlikePost);
+router.delete("/comments/:commentId", authenticateToken, communityController.deleteComment);
 
 module.exports = router;
