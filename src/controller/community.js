@@ -37,8 +37,10 @@ const getCommunityById = async (req, res) => {
 };
 
 const createPostByUser = async (req, res) => {
-  const { post, post_img, create_at } = req.body;
+  const { post, create_at } = req.body;
   const { id_user } = req.user;
+  const post_img = req.file;
+
   try {
     await communityModel.createPostByUser(id_user, post, post_img, create_at);
     res.status(201).json({
@@ -106,7 +108,8 @@ const unlikePost = async (req, res) => {
 const commentOnPost = async (req, res) => {
   const { id_user } = req.user;
   const { communityId } = req.params;
-  const { comment, comment_img, create_at } = req.body;
+  const { comment, create_at } = req.body;
+  const comment_img = req.file;
 
   try {
     await communityModel.commentOnPost(id_user, communityId, comment, comment_img, create_at);

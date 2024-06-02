@@ -77,21 +77,22 @@ const loginUser = async (req, email, password) => {
   }
 };
 
-const updateUserById = async (body, id_user) => {
+const updateUserById = async (body, id_user, img_profile) => {
   const { nama_depan, nama_belakang, password } = body;
+  console.log(body, id_user, img_profile);
 
   let SQLQuery;
   let userValues;
 
   if (password) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ?, password = ? WHERE id_user = ?";
-    userValues = [nama_depan, nama_belakang, hashedPassword, id_user];
+    SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ?, password = ?, img_profile = ? WHERE id_user = ?";
+    userValues = [nama_depan, nama_belakang, hashedPassword, img_profile.buffer, id_user];
   } else {
-    SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ? WHERE id_user = ?";
-    userValues = [nama_depan, nama_belakang, id_user];
+    SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ?, img_profile = ? WHERE id_user = ?";
+    userValues = [nama_depan, nama_belakang, img_profile.buffer, id_user];
   }
-
+console.log(SQLQuery, userValues);
   return dbPool.execute(SQLQuery, userValues);
 };
 

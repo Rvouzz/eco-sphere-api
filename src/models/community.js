@@ -41,11 +41,12 @@ const getCommunityById = (communityId) => {
 };
 
 const createPostByUser = (id_user, post, post_img) => {
+  console.log(post_img);
   const SQLQuery = `
     INSERT INTO community (id_user, post, post_img, created_at)
     VALUES (?, ?, ?, NOW()) 
   `;
-  return dbPool.execute(SQLQuery, [id_user, post, post_img || null]);
+  return dbPool.execute(SQLQuery, [id_user, post, post_img.buffer || null]);
 };
 
 const deleteCommunity = async (communityId) => {
@@ -92,7 +93,7 @@ const commentOnPost = (id_user, communityId, comment, comment_img) => {
     INSERT INTO comments (id_user, communityId, comment, comment_img, created_at)
     VALUES (?, ?, ?, ?, NOW())
   `;
-  return dbPool.execute(SQLQuery, [id_user, communityId, comment, comment_img || null]);
+  return dbPool.execute(SQLQuery, [id_user, communityId, comment, comment_img.buffer || null]);
 };
 
 const deleteComment = (commentId) => {

@@ -35,12 +35,13 @@ app.use(session({
 }));
 
 // Routes
-app.use("/api/user", userRoutes);
+app.use("/api/user", upload.single('img_profile'), userRoutes);
 app.use("/api/password-recovery", recoveryRoutes);
 app.use("/api/contents", upload.single('image'), contentsRoutes);
 app.use("/api/waste", upload.single('image'), wasteRoutes);
 app.use("/api/recycling", upload.single('image'), recyclingRoutes);
-app.use("/api/community", communityRoutes);
+app.use("/api/community", upload.single('post_img')||upload.single('comment_img'), communityRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
