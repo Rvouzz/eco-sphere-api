@@ -5,6 +5,7 @@ const session = require('express-session');
 const cors = require("cors");
 
 const app = express();
+app.use(cors());
 
 // Middleware lainnya
 const middlewareLogReq = require("./middleware/logs");
@@ -24,7 +25,7 @@ const { secretKey } = require('./config/database');
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
 app.use(middlewareLogReq);
 
 app.use(session({
