@@ -91,7 +91,7 @@ const updateUserById = async (body, id_user, img_profile) => {
     SQLQuery = "UPDATE user SET nama_depan = ?, nama_belakang = ?, img_profile = ?, role =? WHERE id_user = ?";
     userValues = [nama_depan, nama_belakang, img_profile, role, id_user];
   }
-console.log(SQLQuery, userValues);
+  console.log(SQLQuery, userValues);
   return dbPool.execute(SQLQuery, userValues);
 };
 
@@ -101,7 +101,8 @@ const deleteUserById = async (id_user) => {
 };
 
 const updateRoleById = async (id_user, newRole) => {
-  const checkAdminQuery = "SELECT * FROM user WHERE id_user = ? AND role = 'Admin'";
+  const checkAdminQuery =
+    "SELECT * FROM user WHERE id_user = ? AND role = 'Admin'";
   const [Admin] = await dbPool.execute(checkAdminQuery, [id_user]);
 
   if (Admin.length === 0) {
