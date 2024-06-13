@@ -11,7 +11,11 @@ const getWasteById = (wasteId) => {
     return dbPool.execute(SQLQuery, [wasteId]);
 }
 
-z
+const createNewWaste = (body, image) => {
+  const SQLQuery = "INSERT INTO waste (name, description, characteristics, impacts, image, recyclingId, contentId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const contentValues = [body.name, body.description, body.characteristics, body.impacts, image, body.recyclingId, body.contentId];
+  return dbPool.execute(SQLQuery, contentValues);
+}
 
 const updateWaste = (body, wasteId, image) => {
     const SQLQuery = "UPDATE waste SET name = ?, description = ?, characteristics = ?, impacts = ?, image = ?, contentId = ? WHERE wasteId = ?"
