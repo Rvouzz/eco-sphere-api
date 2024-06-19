@@ -14,11 +14,7 @@ Request Body :
     "id": 1,
     "name": "nama kategori",
     "description": "deskripsi kategori",
-    "waste-types": [
-        "sampah",
-        "sampah",
-        "sampah"
-    ]
+    "image":"image.jpg"
 }
 ```
 
@@ -30,11 +26,7 @@ Response Body Success :
         "id": 1,
         "name": "Organik",
         "description": "Sampah yang berasal dari bahan alami dan mudah terurai.",
-        "waste-types": [
-            "Sisa Makanan",
-            "Dedaunan",
-            "Kotoran Hewan"
-        ]
+        "image":"image.jpg"
     }
 }
 ```
@@ -43,8 +35,8 @@ Response Body Error :
 
 ```json
 {
-  "error": "Unauthorized",
-  "message": "Invalid or missing authentication token"
+  "error": "Bed Request",
+  "message": "error message"
 }
 ```
 
@@ -62,11 +54,7 @@ Request Body :
     "id": 1,
     "name": "Organik",
     "description": "Sampah yang berasal dari bahan alami dan mudah terurai.",
-    "waste-types": [
-        "Sisa Makanan",
-        "Dedaunan",
-        "Kotoran Hewan"
-    ]
+    "image":"image.jpg"
 }
 ```
 
@@ -78,11 +66,7 @@ Response Body Success :
         "id": 1,
         "name": "Organik",
         "description": "Sampah yang berasal dari bahan alami dan mudah terurai.",
-        "waste-types": [
-            "Sisa Makanan",
-            "Dedaunan",
-            "Kotoran Hewan"
-        ]
+        "image":"image.jpg"
     }
 }
 ```
@@ -91,8 +75,8 @@ Response Body Error :
 
 ```json
 {
-  "error": "Unauthorized",
-  "message": "Invalid or missing authentication token"
+  "error": "Bed Request",
+  "message": "Error Message"
 }
 ```
 
@@ -100,8 +84,7 @@ Response Body Error :
 
 Endpoint : GET /api/contents
 
-Headers :
-- Authorization : token
+
 
 Response Body Success :
 
@@ -112,21 +95,13 @@ Response Body Success :
             "id": 1,
             "name": "Organik",
             "description": "Sampah yang berasal dari bahan alami dan mudah terurai.",
-            "waste-types": [
-                "Sisa Makanan",
-                "Dedaunan",
-                "Kotoran Hewan"
-            ]
+            "image":"image.jpg"
         },
         {
             "id": 2,
             "name": "Anorganik",
             "description": "Sampah yang berasal dari bahan non-alami dan sulit terurai.",
-            "waste-types": [
-                "Plastik",
-                "Kaca",
-                "Karet"
-            ]
+            "image":"image.jpg"
         }
     ]
 }
@@ -144,8 +119,7 @@ Response Body Error :
 
 Endpoint : GET /api/contents/:contentId
 
-Headers :
-- Authorization : token
+
 
 Response Body Success :
 
@@ -155,11 +129,7 @@ Response Body Success :
         "id": 1,
         "name": "Organik",
         "description": "Sampah yang berasal dari bahan alami dan mudah terurai.",
-        "waste-types": [
-            "Sisa Makanan",
-            "Dedaunan",
-            "Kotoran Hewan"
-        ]
+        "image":"image.jpg"
     }
 }
 ```
@@ -192,7 +162,7 @@ Response Body Error :
 
 ```json
 {
-    "errors" : "Address is not found"
+    "errors" : "Content is not found"
 }
 ```
 
@@ -209,7 +179,6 @@ Request Body :
 {
     "id": 1,
     "name": "nama sampah",
-    "category_id": 1,
     "description": "deskripsi sampah",
     "characteristics": [
         "karakteristik",
@@ -221,11 +190,9 @@ Request Body :
         "Dampak",
         "Dampak",
     ],
-    "recycling_steps": [
-        "Tahapan daur ulang",
-        "Tahapan daur ulang",
-        "Tahapan daur ulang",
-    ]
+    "image":"image.jpg",
+    "recyclingId": 1,
+    "contentId":1
 },
 ```
 
@@ -236,7 +203,6 @@ Response Body Success :
     "data" : {
             "id": 1,
             "name": "Plastik",
-            "category": "Anorganik",
             "description": "Sampah plastik yang sulit terurai.",
             "characteristics": [
                 "Tidak Mudah Terurai",
@@ -249,11 +215,9 @@ Response Body Success :
                 "Merusak ekosistem alami",
                 "Mempengaruhi keanekaragaman hayati"
             ],
-            "recycling_steps": [
-                "Pisahkan plastik dari sampah lain",
-                "Cuci bersih plastik",
-                "Bawa ke pusat daur ulang terdekat"
-            ]
+            "image":"image.jpg",
+            "recyclingId": 1,
+            "contentId":1
         },
 }
 ```
@@ -280,7 +244,6 @@ Request Body :
 {
     "id": 1,
     "name": "nama sampah",
-    "category_id": 1,
     "description": "deskripsi sampah",
     "characteristics": [
         "karakteristik",
@@ -292,11 +255,9 @@ Request Body :
         "Dampak",
         "Dampak",
     ],
-    "recycling_steps": [
-        "Tahapan daur ulang",
-        "Tahapan daur ulang",
-        "Tahapan daur ulang",
-    ]
+    "image":"image.jpg",
+    "recyclingId": 1,
+    "contentId":1
 },
 ```
 
@@ -307,7 +268,6 @@ Response Body Success :
     "data" : {
             "id": 1,
             "name": "Plastik",
-            "category": "Anorganik",
             "description": "Sampah plastik yang sulit terurai.",
             "characteristics": [
                 "Tidak Mudah Terurai",
@@ -320,11 +280,9 @@ Response Body Success :
                 "Merusak ekosistem alami",
                 "Mempengaruhi keanekaragaman hayati"
             ],
-            "recycling_steps": [
-                "Pisahkan plastik dari sampah lain",
-                "Cuci bersih plastik",
-                "Bawa ke pusat daur ulang terdekat"
-            ]
+            "image":"image.jpg",
+            "recyclingId": 1,
+            "contentId":1
         },
 }
 ```
@@ -342,8 +300,7 @@ Response Body Error :
 
 Endpoint : GET /api/contents/:contentId/wastes
 
-Headers :
-- Authorization : token
+
 
 Response Body Success :
 
@@ -446,6 +403,11 @@ Request Body :
     "step 1 description",
     "step 2 description",
     "step 3 description"
+  ],
+  "image": [
+    "img.jpg",
+    "img.jpg",
+    "img.jpg"
   ]
 }
 
@@ -462,7 +424,12 @@ Response Body Success :
             "step 1 description",
             "step 2 description",
             "step 3 description"
-        ]
+        ],
+        "image": [
+            "img.jpg",
+            "img.jpg",
+            "img.jpg"
+  ]
     }
 }
 ```
@@ -480,8 +447,7 @@ Response Body Error :
 
 Endpoint : GET /api/contents/recycling
 
-Headers :
-- Authorization : token
+
 
 
 Response Body Success :
@@ -496,7 +462,12 @@ Response Body Success :
             "Pisahkan plastik dari sampah lain",
             "Cuci bersih plastik",
             "Bawa ke pusat daur ulang terdekat"
-            ]
+            ],
+            "image": [
+                "img.jpg",
+                "img.jpg",
+                "img.jpg"
+  ]
         },
         {
             "id": 2,
@@ -505,7 +476,12 @@ Response Body Success :
             "Pisahkan kertas dari sampah lain",
             "Cacah kertas menjadi potongan kecil",
             "Bawa ke pusat daur ulang terdekat"
-            ]
+            ],
+            "image": [
+                "img.jpg",
+                "img.jpg",
+                "img.jpg"
+  ]
         }
         // ... lainnya
     ]
@@ -525,8 +501,7 @@ Response Body Error :
 
 Endpoint : GET /api/contents/recycling/:recyclingId
 
-Headers :
-- Authorization : token
+
 
 Response Body Success :
 
@@ -540,7 +515,12 @@ Response Body Success :
             "Pisahkan plastik dari sampah lain",
             "Cuci bersih plastik",
             "Bawa ke pusat daur ulang terdekat"
-            ]
+            ],
+            "image": [
+                "img.jpg",
+                "img.jpg",
+                "img.jpg"
+  ]
         }
     ]
 }

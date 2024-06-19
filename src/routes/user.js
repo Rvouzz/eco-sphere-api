@@ -1,5 +1,7 @@
 const express = require("express");
 const UserController = require("../controller/user");
+const processImage = require("../middleware/processImage");
+const authenticateToken = require("../middleware/auth");
 const router = express.Router();
 
 // CREATE - POST
@@ -11,10 +13,11 @@ router.get("/", UserController.getAllUser);
 router.get("/:id_user", UserController.getUserById)
 
 // UPDATE - PATCH
-router.patch("/:id_user", UserController.updateUserById)
-router.patch("/:id_user/role", UserController.updateRoleById);
+// router.patch("/:id_user", UserController.updateUserById)
+router.patch("/:id_user", authenticateToken, processImage, UserController.updateUserById)
+router.patch("/:id_user/role", authenticateToken, UserController.updateRoleById);
 
 // DELETE - DELETE
-router.delete("/:id_user", UserController.deleteUserById)
+router.delete("/:id_user", authenticateToken, UserController.deleteUserById)
 
 module.exports = router;

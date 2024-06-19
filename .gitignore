@@ -4,5 +4,9 @@ node_modules/
 # Ignore environment variable files
 .env
 
+#ignore Image
+*.jpg
+*.png
+
 # Ignore database
 eco_sphere.sql

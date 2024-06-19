@@ -12,13 +12,13 @@ const getRecyclingById = (recyclingId) => {
 
 const createNewRecycling = (body, image) => {
     const SQLQuery = "INSERT INTO recycling (steps, image, wasteId) VALUES (?, ?, ?)";
-    const contentValues = [body.steps, image.buffer, body.wasteId];
+    const contentValues = [body.steps, image, body.wasteId];
     return dbPool.execute(SQLQuery, contentValues);
 };
 
 const updateRecycling = (body, recyclingId, image) => {
     const SQLQuery = "UPDATE recycling SET steps = ?, image = ?, wasteId = ? WHERE recyclingId = ?";
-    const contentValues = [body.steps, image.buffer, body.wasteId, recyclingId];
+    const contentValues = [body.steps, image, body.wasteId, recyclingId];
     return dbPool.execute(SQLQuery, contentValues);
 };
 

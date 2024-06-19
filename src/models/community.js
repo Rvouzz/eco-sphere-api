@@ -7,7 +7,8 @@ const getAllCommunity = () => {
       community.post, 
       community.post_img, 
       user.id_user, 
-      user.email
+      user.email,
+      user.img_profile
     FROM 
       community
     LEFT JOIN 
@@ -27,7 +28,8 @@ const getCommunityById = (communityId) => {
       community.post, 
       community.post_img, 
       user.id_user, 
-      user.email
+      user.email,
+      user.img_profile
     FROM 
       community
     LEFT JOIN 

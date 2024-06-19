@@ -33,7 +33,7 @@ const getRecyclingById = async (req, res) => {
 
 const createNewRecycling = async (req, res) => {
     const { body } = req;
-    const image = req.file;
+    const image = req.file ? req.file.filename : req.file === undefined ? null : null;
     try {
       await recyclingModel.createNewRecycling(body, image);
       res.status(201).json({
@@ -49,22 +49,37 @@ const createNewRecycling = async (req, res) => {
 };
 
 const updateRecycling = async (req, res) => {
-    const { body } = req;
-    const { recyclingId } = req.params;
-    const image = req.file;
-    try {
-      await recyclingModel.updateRecycling(body, recyclingId, image);
+  const { body } = req;
+  const { recyclingId } = req.params;
+  let images = [];
+
+  if (req.files && req.files.length > 0) {
+      images = req.files.map(file => file.filename);
+  } else if (req.file) {
+      images = [req.file.filename];
+  } else if (body.image) {
+      images = Array.isArray(body.image) ? body.image : [body.image];
+  }
+
+  console.log(images);
+
+  try {
+      await recyclingModel.updateRecycling(body, recyclingId, images);
       res.status(200).json({
-        message: "UPDATE recycling success",
-        data: req.body,
+          message: "UPDATE recycling success",
+          data: {
+              ...body,
+              images,
+          },
       });
-    } catch (error) {
+  } catch (error) {
       res.status(500).json({
-        message: "Server Error",
-        serverMessage: error.message,
+          message: "Server Error",
+          serverMessage: error.message,
       });
-    }
+  }
 };
+
 
 const deleteRecycling = async (req, res) => {
     const { recyclingId } = req.params;
