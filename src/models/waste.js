@@ -1,4 +1,4 @@
-const {dbPool} = require("../config/database");
+const { dbPool } = require("../config/database");
 
 const getAllWaste =()=>{
 
@@ -12,9 +12,9 @@ const getWasteById = (wasteId) => {
 }
 
 const createNewWaste = (body, image) => {
-    const SQLQuery = "INSERT INTO waste (name, description, characteristics, impacts, image, recyclingId, contentId) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const contentValues = [body.name, body.description, body.characteristics, body.impacts, image, body.recyclingId, body.contentId];
-    return dbPool.execute(SQLQuery, contentValues);
+  const SQLQuery = "INSERT INTO waste (name, description, characteristics, impacts, image, recyclingId, contentId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const contentValues = [body.name, body.description, body.characteristics, body.impacts, image, body.recyclingId, body.contentId];
+  return dbPool.execute(SQLQuery, contentValues);
 }
 
 const updateWaste = (body, wasteId, image) => {
@@ -24,14 +24,14 @@ const updateWaste = (body, wasteId, image) => {
 }
 
 const deleteWaste = (wasteId) => {
-    const SQLQuery = "DELETE FROM waste WHERE wasteId = ?";
-    return dbPool.execute(SQLQuery, [wasteId]);
-}
+  const SQLQuery = "DELETE FROM waste WHERE wasteId = ?";
+  return dbPool.execute(SQLQuery, [wasteId]);
+};
 
-module.exports = { 
-    getAllWaste,
-    getWasteById, 
-    createNewWaste,
-    updateWaste,
-    deleteWaste
+module.exports = {
+  getAllWaste,
+  getWasteById,
+  createNewWaste,
+  updateWaste,
+  deleteWaste,
 };

@@ -94,7 +94,9 @@ const loginUser = async (req, res) => {
 const updateUserById = async (req, res) => {
   const { id_user } = req.params;
   const { body } = req;
+
   const img_profile = req.file ? req.file.filename : body.img_profile === undefined ? null : body.img_profile;
+
   try {
     await UserModel.updateUserById(body, id_user, img_profile);
     res.json({
