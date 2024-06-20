@@ -154,6 +154,27 @@ const getAllLikes = async (req, res) => {
   }
 };
 
+const getLikeByCommunityId = async (req, res) => {
+  const { communityId } = req.params;
+  try {
+    const [data] = await communityModel.getLikeByCommunityId(communityId);
+    if (data.length === 0) {
+      return res.status(404).json({
+        message: 'No likes found for this community',
+      });
+    }
+    res.json({
+      message: 'GET likes by communityId success',
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server Error',
+      serverMessage: error.message,
+    });
+  }
+};
+
 const getAllComments = async (req, res) => {
   try {
     const [data] = await communityModel.getAllComments();
@@ -190,6 +211,27 @@ const getCommentById = async (req, res) => {
   }
 };
 
+const getCommentByCommunityId = async (req, res) => {
+  const { communityId } = req.params;
+  try {
+    const [data] = await communityModel.getCommentByCommunityId(communityId);
+    if (data.length === 0) {
+      return res.status(404).json({
+        message: 'No comments found for this community',
+      });
+    }
+    res.json({
+      message: 'GET comments by communityId success',
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Server Error',
+      serverMessage: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllCommunity,
   getCommunityById,
@@ -200,6 +242,8 @@ module.exports = {
   commentOnPost,
   deleteComment,
   getAllLikes,
+  getLikeByCommunityId,
   getAllComments,
+  getCommentByCommunityId,
   getCommentById
 };
