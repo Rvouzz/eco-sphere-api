@@ -43,11 +43,37 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.params; // Assuming the email is passed as a URL parameter
+    const [data] = await UserModel.getUserByEmail(email);
+
+    if (data.length === 0) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    res.json({
+      message: "GET user by email success",
+      success: true,
+      data: data[0],
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      success: false,
+      serverMessage: error.message,
+    });
+  }
+};
+
 const createNewUser = async (req, res) => {
   const { body } = req;
-  const nama_depan = req.body.nama_depan ? req.body.nama_depan : req.body.nama_depan === undefined ? null : null;
-  const nama_belakang = req.body.nama_belakang ? req.body.nama_belakang : req.body.nama_belakang === undefined ? null : null;
-  
+  const nama_depan = body.nama_depan !== undefined ? body.nama_depan : null;
+  const nama_belakang = body.nama_belakang !== undefined ? body.nama_belakang : null;
+
   try {
     await UserModel.createNewUser(body, nama_depan, nama_belakang);
     res.status(201).json({
@@ -72,17 +98,17 @@ const createNewUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, googleid } = req.body;
 
-  if (!email || !password) {
+  if (!email) {
     return res.status(400).json({
-      message: "Email and password are required",
+      message: "Email is required",
       success: false,
     });
   }
 
   try {
-    const user = await UserModel.loginUser(req, email, password);
+    const user = await UserModel.loginUser(req, email, password, googleid);
 
     res.status(200).json({
       message: "Login success",
@@ -95,6 +121,8 @@ const loginUser = async (req, res) => {
       errorMessage = "User with this email does not exist";
     } else if (error.message === "Incorrect password") {
       errorMessage = "Incorrect password";
+    } else if (error.message === "Invalid Google ID") {
+      errorMessage = "Invalid Google ID";
     }
 
     res.status(400).json({
@@ -183,6 +211,7 @@ const deleteUserById = async (req, res) => {
 module.exports = {
   getAllUser,
   getUserById,
+  getUserByEmail,
   createNewUser,
   loginUser,
   updateUserById,

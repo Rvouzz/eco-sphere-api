@@ -12,46 +12,68 @@ const getUserById = (id_user) => {
   return dbPool.execute(SQLQuery, [id_user]);
 };
 
-const createNewUser = async (body,nama_depan,nama_belakang) => {
+const getUserByEmail = (email) => {
+  const SQLQuery = "SELECT * FROM user WHERE email = ?";
+  return dbPool.execute(SQLQuery, [email]);
+};
+
+const createNewUser = async (body, nama_depan, nama_belakang) => {
   const checkEmailQuery = "SELECT * FROM user WHERE email = ?";
   const [existingUser] = await dbPool.execute(checkEmailQuery, [body.email]);
-
 
   if (existingUser.length > 0) {
     throw new Error("Email already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(body.password, 10);
-
-  const SQLQuery = `INSERT INTO user (email, password, nama_depan, nama_belakang) 
-  VALUES (?, ?, ?, ?)`;
-
-  const userValues = [body.email, hashedPassword, nama_depan, nama_belakang];
-  return dbPool.execute(SQLQuery, userValues);
+  if (body.googleid) {
+    const SQLQuery = `INSERT INTO user (email, nama_depan, nama_belakang, img_profile, googleid, role) 
+                      VALUES (?, ?, ?, ?, ?, ?)`;
+    const userValues = [
+      body.email || null, 
+      nama_depan || null, 
+      nama_belakang || null, 
+      body.img_profile || null, 
+      body.googleid || null,
+      'User' // default role
+    ];
+    return dbPool.execute(SQLQuery, userValues);
+  } else {
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    const SQLQuery = `INSERT INTO user (email, password, nama_depan, nama_belakang, googleid, role) 
+                      VALUES (?, ?, ?, ?, ?, ?)`;
+    const userValues = [
+      body.email || null, 
+      hashedPassword, 
+      nama_depan || null, 
+      nama_belakang || null,
+      null,
+      'User'
+    ];
+    return dbPool.execute(SQLQuery, userValues);
+  }
 };
 
-const loginUser = async (req, email, password) => {
-  try {
-    console.log("Starting login process");
 
+const loginUser = async (req, email, password = null, googleid = null) => {
+  try {
     const checkEmailQuery = "SELECT * FROM user WHERE email = ?";
     const [users] = await dbPool.execute(checkEmailQuery, [email]);
 
-    console.log("Query executed. Users found:", users.length);
-
     if (users.length === 0) {
-      console.error("User with this email does not exist");
-      throw new Error("Invalid email or password");
+      throw new Error("User with this email does not exist");
     }
 
     const user = users[0];
-    console.log("User found:", user);
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      console.error("Incorrect password");
-      throw new Error("Invalid email or password");
+    if (googleid) {
+      if (user.googleid !== googleid) {
+        throw new Error("Invalid Google ID");
+      }
+    } else {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        throw new Error("Incorrect password");
+      }
     }
 
     const { password: _, ...userWithoutPassword } = user;
@@ -64,8 +86,6 @@ const loginUser = async (req, email, password) => {
 
     req.session.user = userWithoutPassword;
 
-    console.log("Login successful");
-
     return {
       success: true,
       user: userWithoutPassword,
@@ -73,7 +93,6 @@ const loginUser = async (req, email, password) => {
       message: "Login successful",
     };
   } catch (error) {
-    console.error("Error occurred during login:", error.message);
     throw error;
   }
 };
@@ -119,6 +138,7 @@ const updateRoleById = async (id_user, newRole) => {
 module.exports = {
   getAllUser,
   getUserById,
+  getUserByEmail,
   createNewUser,
   loginUser,
   updateUserById,

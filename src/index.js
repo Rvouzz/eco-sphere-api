@@ -3,6 +3,7 @@ const PORT = process.env.PORT || 5000;
 const express = require("express");
 const session = require('express-session');
 const cors = require("cors");
+const passport = require('./config/passport');
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,7 @@ const upload = require("./middleware/multer");
 
 // Routes
 const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
 const recoveryRoutes = require("./routes/password-recovery");
 const contentsRoutes = require("./routes/contents");
 const wasteRoutes = require("./routes/waste");
@@ -37,14 +39,17 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Routes
 app.use("/api/user", upload.single('img_profile'), userRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/password-recovery", recoveryRoutes);
 app.use("/api/contents", upload.single('image'), contentsRoutes);
 app.use("/api/waste", upload.single('image'), wasteRoutes);
 app.use("/api/recycling", upload.array('image', 5), recyclingRoutes);
 app.use("/api/community", upload.single('post_img')||upload.single('comment_img'), communityRoutes);
-
 
 // Error handling middleware
 app.use((err, req, res, next) => {

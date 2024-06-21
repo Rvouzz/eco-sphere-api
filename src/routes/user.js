@@ -11,9 +11,9 @@ router.post("/login", UserController.loginUser);
 // READ - GET
 router.get("/", UserController.getAllUser);
 router.get("/:id_user", UserController.getUserById)
+router.get("/email", UserController.getUserByEmail)
 
 // UPDATE - PATCH
-// router.patch("/:id_user", UserController.updateUserById)
 router.patch("/:id_user", authenticateToken, processImage, UserController.updateUserById)
 router.patch("/:id_user/role", authenticateToken, UserController.updateRoleById);
 
