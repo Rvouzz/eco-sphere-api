@@ -37,7 +37,7 @@ const getWasteById = async (req, res) => {
 
 const createNewWaste = async (req, res) => {
     const { body } = req;
-    const image = req.file ? req.file.filename : req.file === undefined ? null : body.image;
+    const image = req.file ? req.file.filename : req.file === undefined ? null : null;
     console.log(image);
     try {
      const [data] = await wasteModel.createNewWaste(body, image);
@@ -58,7 +58,8 @@ const createNewWaste = async (req, res) => {
 const updateWaste = async (req, res) => {
     const { body } = req;
     const { wasteId } = req.params;
-    const image = req.file ? req.file.filename : req.file === undefined ? null : body.image;
+    const image = req.file ? req.file.filename : body.image === undefined ? null : body.image;
+    console.log(image);
     try {
         const [data] = await wasteModel.updateWaste(body, wasteId, image);
       res.status(200).json({

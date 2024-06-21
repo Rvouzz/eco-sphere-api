@@ -8,6 +8,7 @@ const processImage = async (req, res, next) => {
 
         // Skip image processing if files is undefined or empty
         if (!files || files.length === 0 || files[0] === undefined) {
+            console.log(files);
             return next();
         }
 

@@ -44,7 +44,7 @@ const getCommunityById = async (req, res) => {
 const createPostByUser = async (req, res) => {
   const { post } = req.body;
   const { id_user } = req.user;
-  const post_img = req.file ? req.file.filename : req.file === undefined ? null : body.post_img;
+  const post_img = req.file ? req.file.filename : req.file === undefined ? null : null;
 
   try {
     await communityModel.createPostByUser(id_user, post, post_img);

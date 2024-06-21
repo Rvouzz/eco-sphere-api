@@ -50,7 +50,7 @@ const createPostByUser = (id_user, post, post_img) => {
     INSERT INTO community (id_user, post, post_img, created_at)
     VALUES (?, ?, ?, NOW()) 
   `;
-  return dbPool.execute(SQLQuery, [id_user, post, post_img.buffer || null]);
+  return dbPool.execute(SQLQuery, [id_user, post, post_img]);
 };
 
 const deleteCommunity = async (communityId) => {

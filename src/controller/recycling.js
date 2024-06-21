@@ -61,10 +61,14 @@ const updateRecycling = async (req, res) => {
 
   if (req.files && req.files.length > 0) {
       images = req.files.map(file => file.filename);
-  } else if (req.file) {
-      images = [req.file.filename];
-  } else if (body.image) {
-      images = Array.isArray(body.image) ? body.image : [body.image];
+  }
+
+  if (body.existingImages) {
+      if (typeof body.existingImages === 'string') {
+          body.existingImages = [body.existingImages];
+      }
+
+      images = [...body.existingImages, ...images];
   }
 
   console.log(images);
@@ -87,6 +91,8 @@ const updateRecycling = async (req, res) => {
       });
   }
 };
+
+
 
 
 const deleteRecycling = async (req, res) => {

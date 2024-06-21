@@ -57,7 +57,7 @@ const createNewContent = async (req, res) => {
 const updateContent = async (req, res) => {
     const { body } = req;
     const {contentId} = req.params;
-    const image = req.file ? req.file.filename : req.file === undefined ? null : body.image;
+    const image = req.file ? req.file.filename : body.image === undefined ? null : body.image;
     try {
       await contentsModel.updateContent(body,contentId,image);
       res.status(200).json({
