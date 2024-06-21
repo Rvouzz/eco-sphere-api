@@ -8,8 +8,10 @@ const processImage = require('../middleware/processImage');
 router.get('/', communityController.getAllCommunity);
 router.get('/:communityId', communityController.getCommunityById);
 router.get('/likes/all', communityController.getAllLikes);
+router.get('/likes/:communityId', communityController.getLikeByCommunityId);
 router.get('/comments/all', communityController.getAllComments);
 router.get('/comments/:commentId', communityController.getCommentById);
+router.get('/comments/:communityId', communityController.getCommentByCommunityId);
 
 // CREATE - POST //
 router.post('/', processImage, authenticateToken, communityController.createPostByUser);
