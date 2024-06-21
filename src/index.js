@@ -50,6 +50,7 @@ app.use("/api/community", upload.single('post_img')||upload.single('comment_img'
 app.use((err, req, res, next) => {
   res.status(500).send({
     message: "Internal server error",
+    success: false,
     serverMessage: err.message
   });
 });

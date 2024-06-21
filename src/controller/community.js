@@ -5,11 +5,13 @@ const getAllCommunity = async (req, res) => {
     const [data] = await communityModel.getAllCommunity();
     res.json({
       message: 'GET all communities success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -22,15 +24,18 @@ const getCommunityById = async (req, res) => {
     if (data.length === 0) {
       return res.status(404).json({
         message: 'Community not found',
+        success: false,
       });
     }
     res.json({
       message: 'GET community success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -45,10 +50,12 @@ const createPostByUser = async (req, res) => {
     await communityModel.createPostByUser(id_user, post, post_img);
     res.status(201).json({
       message: 'Community post was successful',
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -60,10 +67,12 @@ const deleteCommunity = async (req, res) => {
     await communityModel.deleteCommunity(communityId);
     res.status(200).json({
       message: "DELETE post success",
+      success: true,
     });
   } catch (error) {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
   }
@@ -79,10 +88,12 @@ const likePost = async (req, res) => {
     await communityModel.likePost(id_user, communityId);
     res.status(200).json({
       message: 'Post liked successfully',
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -96,10 +107,12 @@ const unlikePost = async (req, res) => {
     await communityModel.unlikePost(id_user, communityId);
     res.status(200).json({
       message: 'Post unliked successfully',
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -115,10 +128,12 @@ const commentOnPost = async (req, res) => {
     await communityModel.commentOnPost(id_user, communityId, comment, comment_img);
     res.status(201).json({
       message: 'Comment on post successful',
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -130,10 +145,12 @@ const deleteComment = async (req, res) => {
     await communityModel.deleteComment(commentId);
     res.status(200).json({
       message: "DELETE post success",
+      success: true,
     });
   } catch (error) {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
   }
@@ -144,11 +161,13 @@ const getAllLikes = async (req, res) => {
     const [data] = await communityModel.getAllLikes();
     res.json({
       message: 'GET all likes success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -161,15 +180,18 @@ const getLikeByCommunityId = async (req, res) => {
     if (data.length === 0) {
       return res.status(404).json({
         message: 'No likes found for this community',
+        success: false,
       });
     }
     res.json({
       message: 'GET likes by communityId success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -180,11 +202,13 @@ const getAllComments = async (req, res) => {
     const [data] = await communityModel.getAllComments();
     res.json({
       message: 'GET all comments success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -197,15 +221,18 @@ const getCommentById = async (req, res) => {
     if (data.length === 0) {
       return res.status(404).json({
         message: 'Comment not found',
+        success: false,
       });
     }
     res.json({
       message: 'GET comment success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -218,15 +245,18 @@ const getCommentByCommunityId = async (req, res) => {
     if (data.length === 0) {
       return res.status(404).json({
         message: 'No comments found for this community',
+        success: false,
       });
     }
     res.json({
       message: 'GET comments by communityId success',
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: 'Server Error',
+      success: false,
       serverMessage: error.message,
     });
   }

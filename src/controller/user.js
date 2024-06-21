@@ -5,11 +5,13 @@ const getAllUser = async (req, res) => {
     const [data] = await UserModel.getAllUser();
     res.json({
       message: "GET all user success",
+      success: true,
       data: data,
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -23,16 +25,19 @@ const getUserById = async (req, res) => {
     if (data.length === 0) {
       return res.status(404).json({
         message: "User not found",
+        success: false,
       });
     }
 
     res.json({
       message: "GET user by ID success",
+      success: true,
       data: data[0],
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -47,16 +52,19 @@ const createNewUser = async (req, res) => {
     await UserModel.createNewUser(body, nama_depan, nama_belakang);
     res.status(201).json({
       message: "CREATE new user success",
+      success: true,
       data: req.body,
     });
   } catch (error) {
     if (error.message === "Email already exists") {
       res.status(400).json({
         message: "Email already exists",
+        success: false,
       });
     } else {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
     }
@@ -69,6 +77,7 @@ const loginUser = async (req, res) => {
   if (!email || !password) {
     return res.status(400).json({
       message: "Email and password are required",
+      success: false,
     });
   }
 
@@ -90,6 +99,7 @@ const loginUser = async (req, res) => {
 
     res.status(400).json({
       message: errorMessage,
+      success: false,
     });
   }
 };
@@ -104,6 +114,7 @@ const updateUserById = async (req, res) => {
     await UserModel.updateUserById(body, id_user, img_profile);
     res.json({
       message: "UPDATE user success",
+      success: true,
       data: {
         id_user,
         ...body,
@@ -114,6 +125,7 @@ const updateUserById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -129,12 +141,14 @@ const updateRoleById = async (req, res) => {
     if (currentUser.role !== "Admin") {
       return res.status(403).json({
         message: "Only admins can update user roles",
+        success: false,
       });
     }
 
     await UserModel.updateRoleById(id_user, newRole);
     res.json({
       message: "UPDATE user role success",
+      success: true,
       data: {
         id_user,
         newRole,
@@ -143,6 +157,7 @@ const updateRoleById = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
+      success: false,
       serverMessage: error.message,
     });
   }
@@ -154,10 +169,12 @@ const deleteUserById = async (req, res) => {
     await UserModel.deleteUserById(id_user);
     res.status(200).json({
       message: "DELETE user success",
+      success: true,
     });
   } catch (error) {
     res.status(500).json({
       message: "Server Error",
+      success: false,
       serverMessage: error.message,
     });
   }

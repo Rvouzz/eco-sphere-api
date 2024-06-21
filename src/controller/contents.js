@@ -5,11 +5,13 @@ const getAllContents = async (req, res) => {
       const [data] = await contentsModel.getAllContents();
       res.json({
         message: "GET all contnts success",
+        success: true,
         data: data,
       });
     } catch (error) {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
     }
@@ -21,11 +23,13 @@ const getContentById = async (req, res) => {
       const [data] = await contentsModel.getContentById(contentId);
       res.json({
         message: "GET content success",
+        success: true,
         data: data,
       });
     } catch (error) {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
     }
@@ -38,11 +42,13 @@ const createNewContent = async (req, res) => {
       await contentsModel.createNewContent(body,image);
       res.status(201).json({
         message: "CREATE new content success",
+        success: true,
         data: req.body,
       });
     } catch (error) {
         res.status(500).json({
           message: "Server Error",
+          success: false,
           serverMessage: error.message,
         });
     }
@@ -56,11 +62,13 @@ const updateContent = async (req, res) => {
       await contentsModel.updateContent(body,contentId,image);
       res.status(200).json({
         message: "UPDATE content success",
+        success: true,
         data: req.body,
       });
     } catch (error) {
         res.status(500).json({
           message: "Server Error",
+          success: false,
           serverMessage: error.message,
         });
     }
@@ -72,10 +80,12 @@ const deleteContent = async (req, res) => {
       await contentsModel.deleteContent(contentId);
       res.status(200).json({
         message: "DELETE content success",
+        success: true,
       });
     } catch (error) {
         res.status(500).json({
           message: "Server Error",
+          success: false,
           serverMessage: error.message,
         });
     }

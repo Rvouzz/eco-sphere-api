@@ -5,11 +5,13 @@ const getAllRecycling = async (req,res) => {
         const [data] = await recyclingModel.getAllRecycling();
         res.json({
           message: "GET all contents success",
+          success: true,
           data: data,
         });
       } catch (error) {
         res.status(500).json({
           message: "Server Error",
+          success: false,
           serverMessage: error.message,
         });
       }
@@ -21,11 +23,13 @@ const getRecyclingById = async (req, res) => {
       const [data] = await recyclingModel.getRecyclingById(recyclingId);
       res.json({
         message: "GET recycling success",
+        success: true,
         data: data,
       });
     } catch (error) {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
     }
@@ -38,11 +42,13 @@ const createNewRecycling = async (req, res) => {
       await recyclingModel.createNewRecycling(body, image);
       res.status(201).json({
         message: "CREATE new recycling success",
+        success: true,
         data: req.body,
       });
     } catch (error) {
         res.status(500).json({
           message: "Server Error",
+          success: false,
           serverMessage: error.message,
         });
     }
@@ -67,6 +73,7 @@ const updateRecycling = async (req, res) => {
       await recyclingModel.updateRecycling(body, recyclingId, images);
       res.status(200).json({
           message: "UPDATE recycling success",
+          success: true,
           data: {
               ...body,
               images,
@@ -75,6 +82,7 @@ const updateRecycling = async (req, res) => {
   } catch (error) {
       res.status(500).json({
           message: "Server Error",
+          success: false,
           serverMessage: error.message,
       });
   }
@@ -87,10 +95,12 @@ const deleteRecycling = async (req, res) => {
       await recyclingModel.deleteRecycling(recyclingId);
       res.status(200).json({
         message: "DELETE recycling success",
+        success: true,
       });
     } catch (error) {
       res.status(500).json({
         message: "Server Error",
+        success: false,
         serverMessage: error.message,
       });
     }
