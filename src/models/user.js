@@ -12,9 +12,10 @@ const getUserById = (id_user) => {
   return dbPool.execute(SQLQuery, [id_user]);
 };
 
-const createNewUser = async (body) => {
+const createNewUser = async (body,nama_depan,nama_belakang) => {
   const checkEmailQuery = "SELECT * FROM user WHERE email = ?";
   const [existingUser] = await dbPool.execute(checkEmailQuery, [body.email]);
+
 
   if (existingUser.length > 0) {
     throw new Error("Email already exists");
@@ -22,10 +23,10 @@ const createNewUser = async (body) => {
 
   const hashedPassword = await bcrypt.hash(body.password, 10);
 
-  const SQLQuery = `INSERT INTO user (email, password) 
-  VALUES (?, ?)`;
+  const SQLQuery = `INSERT INTO user (email, password, nama_depan, nama_belakang) 
+  VALUES (?, ?, ?, ?)`;
 
-  const userValues = [body.email, hashedPassword];
+  const userValues = [body.email, hashedPassword, nama_depan, nama_belakang];
   return dbPool.execute(SQLQuery, userValues);
 };
 

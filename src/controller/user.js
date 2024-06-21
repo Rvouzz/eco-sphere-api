@@ -40,8 +40,11 @@ const getUserById = async (req, res) => {
 
 const createNewUser = async (req, res) => {
   const { body } = req;
+  const nama_depan = req.body.nama_depan ? req.body.nama_depan : req.body.nama_depan === undefined ? null : null;
+  const nama_belakang = req.body.nama_belakang ? req.body.nama_belakang : req.body.nama_belakang === undefined ? null : null;
+  
   try {
-    await UserModel.createNewUser(body);
+    await UserModel.createNewUser(body, nama_depan, nama_belakang);
     res.status(201).json({
       message: "CREATE new user success",
       data: req.body,
