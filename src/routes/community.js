@@ -11,7 +11,7 @@ router.get('/likes/all', communityController.getAllLikes);
 router.get('/likes/:communityId', communityController.getLikeByCommunityId);
 router.get('/comments/all', communityController.getAllComments);
 router.get('/comments/:commentId', communityController.getCommentById);
-router.get('/comments/:communityId', communityController.getCommentByCommunityId);
+router.get('/:communityId/comments', communityController.getCommentByCommunityId);
 
 // CREATE - POST //
 router.post('/', processImage, authenticateToken, communityController.createPostByUser);
