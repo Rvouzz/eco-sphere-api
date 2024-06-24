@@ -4,11 +4,13 @@ const fs = require('fs');
 
 const processImage = async (req, res, next) => {
     try {
+        
         const files = req.files || [req.file];
+        console.log("prosess : ",files);
 
         // Skip image processing if files is undefined or empty
         if (!files || files.length === 0 || files[0] === undefined) {
-            console.log(files);
+            console.log("tidak di proses : ",files);
             return next();
         }
 

@@ -97,7 +97,8 @@ const commentOnPost = (id_user, communityId, comment, comment_img) => {
     INSERT INTO comments (id_user, communityId, comment, comment_img, created_at)
     VALUES (?, ?, ?, ?, NOW())
   `;
-  return dbPool.execute(SQLQuery, [id_user, communityId, comment, comment_img.buffer || null]);
+  console.log(id_user,communityId,comment,comment_img);
+  return dbPool.execute(SQLQuery, [id_user, communityId, comment, comment_img || null]);
 };
 
 const getAllLikes = () => {
@@ -149,7 +150,8 @@ const getAllComments = () => {
       comments.comment, 
       comments.comment_img, 
       comments.created_at, 
-      user.email
+      user.email,
+      user.img_profile
     FROM 
       comments
     LEFT JOIN 
@@ -171,7 +173,8 @@ const getCommentById = (commentId) => {
       comments.comment, 
       comments.comment_img, 
       comments.created_at, 
-      user.email
+      user.email,
+      user.img_profile
     FROM 
       comments
     LEFT JOIN 
@@ -193,7 +196,8 @@ const getCommentByCommunityId = (communityId) => {
       comments.comment, 
       comments.comment_img, 
       comments.created_at, 
-      user.email
+      user.email,
+      user.img_profile
     FROM 
       comments
     LEFT JOIN 

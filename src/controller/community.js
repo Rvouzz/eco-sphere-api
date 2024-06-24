@@ -122,8 +122,8 @@ const commentOnPost = async (req, res) => {
   const { id_user } = req.user;
   const { communityId } = req.params;
   const { comment, create_at } = req.body;
-  const comment_img = req.file ? req.file.filename : req.file === undefined ? null : body.comment_img;
-
+  const comment_img = req.file ? req.file.filename : req.file === undefined ? null : null;
+ console.log(communityId, comment, comment_img, id_user);
   try {
     await communityModel.commentOnPost(id_user, communityId, comment, comment_img);
     res.status(201).json({

@@ -9,18 +9,13 @@ router.get('/', communityController.getAllCommunity);
 router.get('/:communityId', communityController.getCommunityById);
 router.get('/likes/all', communityController.getAllLikes);
 router.get('/likes/:communityId', communityController.getLikeByCommunityId);
-router.get('/comments/all', communityController.getAllComments);
-router.get('/comments/:commentId', communityController.getCommentById);
-router.get('/:communityId/comments', communityController.getCommentByCommunityId);
 
 // CREATE - POST //
-router.post('/', processImage, authenticateToken, communityController.createPostByUser);
+router.post('/', authenticateToken, processImage, communityController.createPostByUser);
 router.post('/:communityId/like', authenticateToken, communityController.likePost);
-router.post('/:communityId/comments', authenticateToken, communityController.commentOnPost);
 
 // DELETE - DELETE //
 router.delete("/:communityId", communityController.deleteCommunity);
 router.delete('/:communityId/unlike', authenticateToken, communityController.unlikePost);
-router.delete("/comments/:commentId", authenticateToken, communityController.deleteComment);
 
 module.exports = router;
